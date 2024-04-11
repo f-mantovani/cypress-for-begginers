@@ -31,6 +31,10 @@ const colors = {
 
 const registerForm = new RegisterForm();
 
+
+
+
+
 describe('Image Registration', () => {
 	after(() => {
 		cy.clearAllLocalStorage()
