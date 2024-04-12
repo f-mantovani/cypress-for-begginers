@@ -2,7 +2,7 @@
 
 [![Cypress Tests - Complete Project](https://github.com/ErickWendel/cypress-for-begginers/actions/workflows/cypress-complete-project.yml/badge.svg)](https://github.com/ErickWendel/cypress-for-begginers/actions/workflows/cypress-complete-project.yml)
 
-[![Cypress Tests - In Class Project](https://github.com/ErickWendel/cypress-for-begginers/actions/workflows/cypress-in-class-project.yml/badge.svg)](https://github.com/ErickWendel/cypress-for-begginers/actions/workflows/cypress-in-class-project.yml)
+[![Cypress Tests - Class Code Project](https://github.com/f-mantovani/cypress-for-begginers/actions/workflows/cypress-class-code.yml/badge.svg)](https://github.com/f-mantovani/cypress-for-begginers/actions/workflows/cypress-class-code.yml)
 
 Hi this is the repo containing code examples and challenges of my video on [Cypress for begginers - Creating e2e tests on frontend apps](https://bit.ly/mini-curso-cypress). 
 
