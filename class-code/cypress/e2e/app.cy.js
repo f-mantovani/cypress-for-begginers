@@ -143,8 +143,39 @@ describe('Image Registration', () => {
         });
 
         it('Then The inputs should be cleared', () => {
-			registerForm.elements.titleInput().should('have.value', '')
-			registerForm.elements.imageUrl().should('have.value', '')
-		});
+            registerForm.elements.titleInput().should('have.value', '');
+            registerForm.elements.imageUrl().should('have.value', '');
+        });
+    });
+
+    describe('Submitting an image and updating the list', () => {
+        const input = {
+            title: 'BR Alien',
+            url: 'https://cdn.mos.cms.futurecdn.net/eM9EvWyDxXcnQTTyH8c8p5-1200-80.jpg',
+        };
+
+        it('Given I am on the image registration page');
+
+        it(`Then I have entered "${input.title}" in the title field`);
+
+        it(`Then I have entered "${input.url}" in the URL field`);
+
+        it('When I click the submit button');
+
+        it('And the list of registered images should be updated with the new item');
+
+        it('And the new item should be stored in the localStorage');
+
+        it('Then The inputs should be cleared');
+    });
+
+    describe('Refreshing the page after submitting an image clicking in the submit button', () => {
+        it('Given I am on the image registration page');
+
+        it('Then I have submitted an image by clicking the submit button');
+
+        it('When I refresh the page');
+
+        it('Then I should still see the submitted image in the list of registered images');
     });
 });
