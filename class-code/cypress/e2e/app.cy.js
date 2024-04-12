@@ -120,7 +120,7 @@ describe('Image Registration', () => {
 
         it('Then I can hit enter to submit the form', () => {
             registerForm.hitEnter();
-            cy.wait(300);
+            cy.wait(500);
         });
 
         it('And the list of registered images should be updated with the new item', () => {
@@ -150,32 +150,80 @@ describe('Image Registration', () => {
 
     describe('Submitting an image and updating the list', () => {
         const input = {
-            title: 'BR Alien',
-            url: 'https://cdn.mos.cms.futurecdn.net/eM9EvWyDxXcnQTTyH8c8p5-1200-80.jpg',
+            title: 'Green Alien',
+            url: 'https://imgs.search.brave.com/V9RPDkA4Sdr1rOmOtd_jtxTv03eYUSUxLNfbvRP8wno/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ4/NDQxOTMzL3Bob3Rv/L3BvcnRyYWl0LW9m/LWFuLWFsaWVuLmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz1l/V2RpNWZSLVRObWoz/OEJkZTM4SXlJbC0y/UWpKN3B4YXJ2UFRB/dFlla0p3PQ',
         };
 
-        it('Given I am on the image registration page');
+        it('Given I am on the image registration page', () => {
+            cy.visit('/');
+        });
 
-        it(`Then I have entered "${input.title}" in the title field`);
+        it(`Then I have entered "${input.title}" in the title field`, () => {
+            registerForm.typeTitle(input.title);
+        });
 
-        it(`Then I have entered "${input.url}" in the URL field`);
+        it(`Then I have entered "${input.url}" in the URL field`, () => {
+            registerForm.typeUrl(input.url);
+        });
 
-        it('When I click the submit button');
+        it('When I click the submit button', () => {
+            registerForm.clickSubmit();
+            cy.wait(500);
+        });
 
-        it('And the list of registered images should be updated with the new item');
+        it('And the list of registered images should be updated with the new item', () => {
+            cy.get('#card-list .card-img').should((elements) => {
+                const last = elements[elements.length - 1];
+                const src = last.getAttribute('src');
 
-        it('And the new item should be stored in the localStorage');
+                assert.strictEqual(src, input.url);
+            });
+        });
 
-        it('Then The inputs should be cleared');
+        it('And the new item should be stored in the localStorage', () => {
+            cy.getAllLocalStorage().should((ls) => {
+                const local = ls[location.origin];
+                const elements = JSON.parse(Object.values(local));
+                const last = elements.at(-1);
+
+                assert.deepStrictEqual(last, { title: input.title, imageUrl: input.url });
+            });
+        });
+
+        it('Then The inputs should be cleared', () => {
+            registerForm.elements.titleInput().should('have.value', '');
+            registerForm.elements.imageUrl().should('have.value', '');
+        });
     });
 
     describe('Refreshing the page after submitting an image clicking in the submit button', () => {
-        it('Given I am on the image registration page');
+        const input = {
+            title: 'Medusa alien',
+            url: 'https://imgs.search.brave.com/WQh-JREuOg79zIjtSWTxDnbTygLCnB5r6UcEaNg7fKo/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cGhvdG9zLXByZW1p/dW0vZXh0cmF0ZXJy/ZXN0cmUtcXVpLXJl/c3NlbWJsZS1tZWR1/c2UtZWZmZXQtc2Vy/cGVudF8xMDI1MjIy/LTg3Mi5qcGc_c2l6/ZT02MjYmZXh0PWpw/Zw',
+        };
 
-        it('Then I have submitted an image by clicking the submit button');
+        it('Given I am on the image registration page', () => {
+            cy.visit('/');
+        });
 
-        it('When I refresh the page');
+        it('Then I have submitted an image by clicking the submit button', () => {
+            registerForm.typeTitle(input.title);
+            registerForm.typeUrl(input.url);
+            registerForm.clickSubmit();
+            cy.wait(500);
+        });
 
-        it('Then I should still see the submitted image in the list of registered images');
+        it('When I refresh the page', () => {
+            cy.reload();
+        });
+
+        it('Then I should still see the submitted image in the list of registered images', () => {
+            cy.get('#card-list .card-img').should((elements) => {
+                const last = elements[elements.length - 1];
+				const src = last.getAttribute('src')
+
+                assert.deepStrictEqual(src, input.url);
+            });
+        });
     });
 });
